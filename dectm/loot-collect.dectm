@@ -1,0 +1,19 @@
+# scope: lab-only
+# Migrado de loot_collect.lua (c2.send inexistente → download + hash).
+# Ajusta path a tu lab.
+name: loot-collect
+version: 1.0.0
+scope: lab-only
+mitre: [T1005]
+sign: null
+reruns: 1
+steps:
+  - name: lista
+    op: fs.list
+    path: lab/collect
+  - name: trae
+    op: download
+    path: lab/collect/muestra.txt
+  - name: huella
+    op: hash
+    text: muestra.txt

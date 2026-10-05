@@ -18,6 +18,14 @@ Cada plugin es un script Lua validado contra el runtime real del agente
 | [`dect-lethal-script`](plugins/dect-lethal-script/) | Triage autónomo 5 fases (beacon → `c2.task` → condicional → `fs.list` → digest + KV multi-round), modos `quick`/`full` | T1082, T1057, T1016, T1033, T1083, T1018 |
 | [`dect-lethal-watchdog`](plugins/dect-lethal-watchdog/) | Baseline de procesos en KV + diff ALTAS/BAJAS por ronda | T1057 |
 
+## Fuentes `.dectm` (`dectm/`)
+
+Manifiestos YAML del DSL (Fase 14 en c2-dect) que generan el Lua firmado:
+`hello, sysinfo, beacon-jitter, loot-collect, cleanup` (migrados de
+`scripts/lua/`) + `sweep` (ejemplo). Byte-idénticos a los del repo
+principal. Se transpilan con `tools/dls/dls.py` (`dls.py compile x.dectm`),
+que valida y firma antes de desplegar. Ver `PLUGIN_SPEC.md § Fuentes`.
+
 ## Uso (operador autorizado, lab con c2-dect corriendo)
 
 ```powershell

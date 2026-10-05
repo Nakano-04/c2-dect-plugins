@@ -1,0 +1,14 @@
+# scope: lab-only
+# Migrado de beacon_jitter.lua (agent.exec inexistente → beacon + sleep).
+name: beacon-jitter
+version: 1.0.0
+scope: lab-only
+mitre: [T1082]
+sign: null
+reruns: 1
+steps:
+  - name: contexto
+    op: beacon
+  - name: jitter
+    op: sleep
+    ms: 30000

@@ -1,0 +1,13 @@
+# scope: lab-only
+# mitre: T1082
+# Migrado de sysinfo.lua (agent.exec inexistente → c2.task allowlist).
+name: sysinfo
+version: 1.0.0
+scope: lab-only
+mitre: [T1082]
+sign: null
+reruns: 1
+steps:
+  - name: info
+    op: task
+    cmd: sysinfo

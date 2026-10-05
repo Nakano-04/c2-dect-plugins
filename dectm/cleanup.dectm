@@ -1,0 +1,17 @@
+# scope: lab-only
+# Migrado de cleanup.lua (agent.exec inexistente → rm con confirmación
+# exacta + kv.del; el transpilador rechaza confirm incorrecto).
+name: cleanup
+version: 1.0.0
+scope: lab-only
+mitre: [T1070]
+sign: null
+reruns: 1
+steps:
+  - name: borra_scratch
+    op: fs.rm
+    path: lab/tmp/scratch.txt
+    confirm: "YES:scratch.txt"
+  - name: olvida_cursor
+    op: kv.del
+    key: cleanup:done

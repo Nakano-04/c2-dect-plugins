@@ -1,0 +1,13 @@
+# scope: lab-only
+# mitre: []
+# Migrado de hello.lua (API inexistente log_info → c2.log).
+name: hello
+version: 1.0.0
+scope: lab-only
+mitre: [T1082]
+sign: null
+reruns: 1
+steps:
+  - name: saluda
+    op: log
+    msg: hello ok

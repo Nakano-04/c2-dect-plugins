@@ -1,0 +1,31 @@
+# scope: lab-only
+# mitre: T1082, T1057, T1016
+# sweep.dls — ejemplo v1: barrido rectilíneo (sin ramas: para condicionales
+# usa Lua a mano, p.ej. scripts/lua/dect-lethal-script.lua).
+name: dect-lethal-sweep
+version: 1.0.0
+scope: lab-only
+mitre: [T1082, T1057, T1016]
+sign: null
+defaults:
+  timeout: 30
+reruns: 1
+steps:
+  - name: sys
+    op: task
+    cmd: sysinfo
+  - name: procs
+    op: task
+    cmd: ps
+  - name: who
+    op: exec
+    cmd: whoami
+    timeout: 10
+  - name: nets
+    op: task
+    cmd: netinfo
+    requires: [sys]
+  - name: snap
+    op: kv.set
+    key: sweep:last-run
+    value: done

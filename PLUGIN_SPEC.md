@@ -42,3 +42,13 @@ tested_with: c2-dect master  # commit/rama del runtime validado
    `go test -run TestDectLethal ./cmd/agent_go/`.
 2. Copia el `.lua` validado aquí + bump `version` en `plugin.yml`.
 3. Sube al marketplace de tu lab y ejecuta por `script_id` (multi-round).
+
+## Fuentes `.dectm` (carpeta `dectm/`)
+
+Los manifiestos YAML del DSL (v1, `tools/dls/` en c2-dect) son la fuente de
+las plantillas rectilíneas: se transpilan a Lua firmado (`dls.py compile`)
+con validación compile-time (allowlist, confirms, topes, firmas). Regla de
+simetría: cada `.dectm` aquí debe ser byte-idéntico a su gemelo en c2-dect
+(`scripts/lua/*.dectm`, `tools/dls/examples/*.dectm`). Lo que no es
+expresable en el DSL (ramas, loops, capacidades sensibles) queda como `.lua`
+a mano, solo con autorización explícita (ver ETHICS.md).

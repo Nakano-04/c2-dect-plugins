@@ -1,0 +1,47 @@
+# scope: lab-only
+# mitre: T1082, T1057, T1016, T1033, T1083, T1018
+# DECT Lethal Script completo en un solo archivo .dectm: port fiel de
+# scripts/lua/dect-lethal-script.lua (triage 5 fases, quick/full, KV).
+# Ramas via when (predicados validados), repetición via foreach
+# (desenrollado en compilación). Logs resumidos (ok) vs bytes del original.
+name: dect-lethal-full
+version: 1.0.0
+scope: lab-only
+mitre: [T1082, T1057, T1016, T1033, T1083, T1018]
+sign: null
+reruns: 1
+steps:
+  - {name: inicio, op: log, msg: "inicio mode={{args.mode|full}} (dect-lethal-full)"}
+  - {name: sysinfo, task: sysinfo}
+  - {name: ps, task: ps}
+  - {name: netinfo, task: netinfo}
+  - {name: env, task: env, when: 'args.mode != "quick"'}
+  - {name: connections, task: connections, when: 'args.mode != "quick"'}
+  - {name: services, task: services, when: 'args.mode != "quick"'}
+  - name: hits
+    op: scan
+    from: ps
+    into: hits
+    patterns: [mimikatz, psexec, nmap, bloodhound, rubeus, lazagne]
+  - {name: rep_iocs, report: hits, prefix: "iocs=", empty: "ninguno"}
+  - name: ports
+    op: scan
+    from: connections
+    into: ports
+    patterns: [":445", ":3389", ":5985", ":22", ":3306", ":1433"]
+    when: steps.connections is present
+  - {name: rep_ports, report: ports, prefix: "puertos=", empty: "ninguno",
+     when: steps.connections is present}
+  - {name: home, fs.list: ""}
+  - {name: home_n, count: home, prefix: "home_entries~",
+     when: steps.home is present}
+  - {name: who, exec: whoami, timeout: 60}
+  - {name: digest, op: hash, from: [sysinfo, ps], sep: "\n"}
+  - name: base
+    op: baseline
+    key: dect-lethal:digest
+    from: digest
+    first: "primera ronda: baseline guardado"
+    same: "sin cambios vs baseline"
+    changed: "CAMBIO vs baseline"
+  - {name: rnd, round: dect-lethal:round, suffix: " fin"}

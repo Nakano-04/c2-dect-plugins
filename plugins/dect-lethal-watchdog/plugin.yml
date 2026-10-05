@@ -1,0 +1,8 @@
+name: dect-lethal-watchdog
+version: 1.0.0
+scope: lab-only
+mitre: [T1057]
+runtime: lua
+entry: dect-lethal-watchdog.lua
+description: Baseline de procesos en KV y diff ALTAS/BAJAS por ronda (clave por ejecutable).
+tested_with: c2-dect master (scripting Fases 2-13)

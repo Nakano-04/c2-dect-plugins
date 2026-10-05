@@ -1,0 +1,8 @@
+name: dect-lethal-script
+version: 1.0.0
+scope: lab-only
+mitre: [T1082, T1057, T1016, T1033, T1083, T1018]
+runtime: lua
+entry: dect-lethal-script.lua
+description: Triage autonomo multi-fase (beacon, c2.task, triage condicional, fs.list, digest + KV), modos quick/full.
+tested_with: c2-dect master (scripting Fases 2-13)

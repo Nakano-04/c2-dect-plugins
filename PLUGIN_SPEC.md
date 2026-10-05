@@ -47,8 +47,15 @@ tested_with: c2-dect master  # commit/rama del runtime validado
 
 Los manifiestos YAML del DSL (v1, `tools/dls/` en c2-dect) son la fuente de
 las plantillas rectilíneas: se transpilan a Lua firmado (`dls.py compile`)
-con validación compile-time (allowlist, confirms, topes, firmas). Regla de
-simetría: cada `.dectm` aquí debe ser byte-idéntico a su gemelo en c2-dect
-(`scripts/lua/*.dectm`, `tools/dls/examples/*.dectm`). Lo que no es
-expresable en el DSL (ramas, loops, capacidades sensibles) queda como `.lua`
-a mano, solo con autorización explícita (ver ETHICS.md).
+con validación compile-time (allowlist, confirms, topes, firmas). Reglas:
+
+- **Simetría**: cada `.dectm` aquí debe ser byte-idéntico a su gemelo en
+  c2-dect (`scripts/lua/*.dectm`, `tools/dls/examples/*.dectm`). El CI lo
+  verifica (job `validate`).
+- **El Lua emitido NO se versiona**: es artefacto determinista (`dls.py
+  compile` → mismo `script_id`); se regenera, no se almacena. Lo que vive
+  en `plugins/` es Lua **escrito a mano** (control de flujo que el DSL no
+  expresa), validado contra el runtime real.
+- Lo que no es expresable en el DSL (ramas sobre datos salvo `when`,
+  loops salvo `foreach` desenrollado, capacidades sensibles) queda como
+  `.lua` a mano, solo con autorización explícita (ver ETHICS.md).

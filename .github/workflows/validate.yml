@@ -1,0 +1,35 @@
+name: Validate catalog
+
+# Punto 5 de la revisión: CI visible para el catálogo. Verifica schema de
+# plugin.yml, headers scope, simetría .dectm contra c2-dect (pin master) y
+# compilación con el transpilador del repo principal. Nada se ejecuta
+# contra agentes: solo parseo, hashes y compilación en seco.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: plugins
+      - uses: actions/checkout@v4
+        with:
+          repository: Nakano-04/c2-dect
+          ref: master
+          path: c2-dect
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install pyyaml cryptography
+      - name: Validate catalog
+        run: python plugins/validate.py --c2-dect c2-dect

@@ -10,6 +10,12 @@ Cada plugin es un script Lua validado contra el runtime real del agente
 > Úsalo solo en sistemas propios o con autorización escrita explícita.
 > Lee [ETHICS.md](ETHICS.md) antes de usar o contribuir. El acceso no
 > autorizado a sistemas informáticos es ilegal.
+>
+> **Por qué "Lethal"**: eficacia cuando se usa correctamente — lo que un
+> operador tarda horas en triage, estos plugins lo hacen en minutos, con
+> alcance declarado, firma y auditoría. No es weaponización: el runtime es
+> sandboxeado con topes y lo destructivo está excluido por diseño
+> (ver `ETHICS.md` §3 y `PLUGIN_SPEC.md`).
 
 ## Plugins
 

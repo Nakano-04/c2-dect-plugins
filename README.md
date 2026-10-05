@@ -22,9 +22,11 @@ Cada plugin es un script Lua validado contra el runtime real del agente
 
 Manifiestos YAML del DSL (Fase 14 en c2-dect) que generan el Lua firmado:
 `hello, sysinfo, beacon-jitter, loot-collect, cleanup` (migrados de
-`scripts/lua/`) + `sweep` (ejemplo). Byte-idénticos a los del repo
-principal. Se transpilan con `tools/dls/dls.py` (`dls.py compile x.dectm`),
-que valida y firma antes de desplegar. Ver `PLUGIN_SPEC.md § Fuentes`.
+`scripts/lua/`) + `sweep` (ejemplo) + `dect-lethal-full` (**port completo
+del triage 5 fases en un solo archivo**, con `when`/`scan`/`baseline`).
+Byte-idénticos a los del repo principal. Se transpilan con
+`tools/dls/dls.py` (`dls.py compile x.dectm`), que valida y firma antes de
+desplegar. Ver `PLUGIN_SPEC.md § Fuentes`.
 
 ## Uso (operador autorizado, lab con c2-dect corriendo)
 

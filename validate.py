@@ -16,7 +16,6 @@ Requiere PyYAML (pip install pyyaml). Sale 0 si todo ok, 1 con la lista.
 """
 
 import argparse
-import hashlib
 import os
 import re
 import sys
@@ -42,44 +41,44 @@ def bad(msg):
 def check_plugin(d, c2d):
     yml = os.path.join(d, "plugin.yml")
     if not os.path.isfile(yml):
-        bad("%s: falta plugin.yml" % d)
+        bad(f"{d}: falta plugin.yml")
         return
     with open(yml, encoding="utf-8") as fh:
         m = yaml.safe_load(fh)
     if not isinstance(m, dict):
-        bad("%s: manifiesto no es mapa" % yml)
+        bad(f"{yml}: manifiesto no es mapa")
         return
     for k in ("name", "version", "scope", "mitre", "runtime", "entry"):
         if k not in m:
-            bad("%s: falta clave %r" % (yml, k))
+            bad(f"{yml}: falta clave {k!r}")
     name = os.path.basename(d)
     if m.get("name") != name:
-        bad("%s: name %r != carpeta" % (yml, m.get("name")))
+        bad("{}: name {!r} != carpeta".format(yml, m.get("name")))
     if not isinstance(m.get("version"), str) or not SEMVER.match(m["version"]):
-        bad("%s: version semver requerida" % yml)
+        bad(f"{yml}: version semver requerida")
     if not isinstance(m.get("scope"), str) or not m["scope"].strip():
-        bad("%s: scope vacío" % yml)
+        bad(f"{yml}: scope vacío")
         return
     scope = m["scope"].strip()
     mitre = m.get("mitre", [])
     if not isinstance(mitre, list) or not mitre or not all(
             isinstance(t, str) and MITRE.match(t) for t in mitre):
-        bad("%s: mitre lista de Txxxx" % yml)
+        bad(f"{yml}: mitre lista de Txxxx")
     if m.get("runtime") not in ("lua", "wasm"):
-        bad("%s: runtime lua|wasm" % yml)
+        bad(f"{yml}: runtime lua|wasm")
     entry = os.path.join(d, str(m.get("entry", "")))
     if not os.path.isfile(entry):
-        bad("%s: entry %r no existe" % (yml, m.get("entry")))
+        bad("{}: entry {!r} no existe".format(yml, m.get("entry")))
         return
     if os.path.basename(entry) != name + ".lua":
-        bad("%s: entry debe ser <name>.lua" % yml)
+        bad(f"{yml}: entry debe ser <name>.lua")
     with open(entry, encoding="utf-8") as fh:
         head = "".join(fh.readlines()[:5])
     if "-- scope:" not in head:
-        bad("%s: sin header -- scope:" % entry)
+        bad(f"{entry}: sin header -- scope:")
         return
     if scope not in head:
-        bad("%s: scope del manifiesto (%r) no está en el header" % (entry, scope))
+        bad(f"{entry}: scope del manifiesto ({scope!r}) no está en el header")
 
 
 def check_dectm_symmetry(c2d):
@@ -94,15 +93,19 @@ def check_dectm_symmetry(c2d):
     for fname in sorted(os.listdir(local)):
         if not fname.endswith(".dectm"):
             continue
-        data = open(os.path.join(local, fname), "rb").read()
-        match = None
+        with open(os.path.join(local, fname), "rb") as fh:
+            data = fh.read()
+        match = False
         for cdir in candidates:
             cand = os.path.join(cdir, fname)
-            if os.path.isfile(cand) and open(cand, "rb").read() == data:
-                match = cand
-                break
-        if match is None:
-            bad("dectm/%s: sin gemelo byte-idéntico en c2-dect" % fname)
+            if not os.path.isfile(cand):
+                continue
+            with open(cand, "rb") as fh:
+                if fh.read() == data:
+                    match = True
+                    break
+        if not match:
+            bad(f"dectm/{fname}: sin gemelo byte-idéntico en c2-dect")
             continue
         # Compila con el transpilador del repo principal.
         sys.path.insert(0, os.path.join(c2d, "tools", "dls"))
@@ -110,8 +113,8 @@ def check_dectm_symmetry(c2d):
             import dls
             bundle = dls.compile_dls(os.path.join(local, fname))
             assert bundle["scope"] and bundle["script_id"]
-        except Exception as exc:  # noqa: BLE001 — el mensaje es el test
-            bad("dectm/%s: no compila: %s" % (fname, exc))
+        except Exception as exc:
+            bad(f"dectm/{fname}: no compila: {exc}")
         finally:
             sys.path.remove(os.path.join(c2d, "tools", "dls"))
             sys.modules.pop("dls", None)
@@ -138,12 +141,12 @@ def main(argv=None):
                 check_plugin(p, c2d)
     check_dectm_symmetry(c2d)
     if errors:
-        print("validate: %d fallos:" % len(errors))
+        print(f"validate: {len(errors)} fallos:")
         for e in errors:
-            print("  - %s" % e)
+            print(f"  - {e}")
         return 1
     nplug = len([d for d in os.listdir(plugdir)]) if os.path.isdir(plugdir) else 0
-    print("validate: ok (%d plugins + dectm simétricos y compilables)" % nplug)
+    print(f"validate: ok ({nplug} plugins + dectm simétricos y compilables)")
     return 0
 
 

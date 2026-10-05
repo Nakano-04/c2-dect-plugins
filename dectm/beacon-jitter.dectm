@@ -7,8 +7,5 @@ mitre: [T1082]
 sign: null
 reruns: 1
 steps:
-  - name: contexto
-    op: beacon
-  - name: jitter
-    op: sleep
-    ms: 30000
+  - {name: contexto, beacon: true}
+  - {name: jitter, sleep: 30000}

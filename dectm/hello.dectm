@@ -8,6 +8,4 @@ mitre: [T1082]
 sign: null
 reruns: 1
 steps:
-  - name: saluda
-    op: log
-    msg: hello ok
+  - {name: saluda, log: "hello ok"}

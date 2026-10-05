@@ -8,6 +8,4 @@ mitre: [T1082]
 sign: null
 reruns: 1
 steps:
-  - name: info
-    op: task
-    cmd: sysinfo
+  - {name: info, task: sysinfo}

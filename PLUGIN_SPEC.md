@@ -1,4 +1,4 @@
-# PLUGIN_SPEC v1 — formato de plugin DECT Lethal Script
+# PLUGIN_SPEC v1 - formato de plugin DECT Lethal Script
 
 Un plugin es una carpeta `plugins/<nombre>/` con:
 

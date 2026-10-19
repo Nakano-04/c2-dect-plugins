@@ -1,4 +1,4 @@
-# ETHICS — uso autorizado únicamente
+# ETHICS - uso autorizado únicamente
 
 Este repositorio distribuye plugins de scripting para ejercicios de Red Team
 **autorizados** (laboratorio propio, CTFs, auditorías contratadas). Su uso

@@ -1,6 +1,6 @@
 # scope: lab-only
 # mitre: T1082, T1057, T1016
-# sweep.dectm — ejemplo v1: barrido rectilíneo (sin ramas: para condicionales
+# sweep.dectm - ejemplo v1: barrido rectilíneo (sin ramas: para condicionales
 # usa Lua a mano, p.ej. scripts/lua/dect-lethal-script.lua).
 name: dect-lethal-sweep
 version: 1.0.0

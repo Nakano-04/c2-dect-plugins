@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""validate.py — CI del catálogo c2-dect-plugins (Fase 14, punto 5).
+"""validate.py - CI del catálogo c2-dect-plugins (Fase 14, punto 5).
 
 Verifica, sin ejecutar nada contra red ni agentes:
 1. Schema de cada `plugins/*/plugin.yml` (claves, semver, scope, MITRE,

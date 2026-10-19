@@ -1,7 +1,9 @@
 # c2-dect-plugins - DECT Lethal Script plugins
 
 Colección curada de plugins de scripting para
-[c2-dect](https://github.com/Nakano-04/c2-dect) (módulo scripting, Fases 2–13).
+[c2-dect](https://github.com/Nakano-04/c2-dect), la plataforma de simulación de
+adversarios de extremo a extremo (acceso inicial → exploración → explotación →
+beaconing). Aquí viven los plugins del módulo de scripting (Fases 2–13).
 Cada plugin es un script Lua validado contra el runtime real del agente
 (`cmd/agent_go`, ver `scripting_example_test.go` en el repo principal).
 
